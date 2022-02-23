@@ -1,0 +1,16 @@
+input_dir: presentation/
+output_dir: presentation/Generated/
+
+strings:
+    inputs: Resources/en.lproj
+    outputs:
+     templatePath: presentation/Tools/SwiftgenTemplates/structured-swift4-localizable.stencil
+     output: Strings.swift
+
+xcassets:
+    inputs:
+     - Assets/Media.xcassets
+     - Assets/Colors.xcassets
+    outputs:
+     templateName: swift5
+     output: XCAssets+Generated.swift

@@ -1,0 +1,9 @@
+input_dir: data/
+output_dir: data/Generated/
+
+plist:
+  inputs: Info.plist
+  outputs:
+    templateName: runtime-swift5
+    output: InfoPlist.swift
+

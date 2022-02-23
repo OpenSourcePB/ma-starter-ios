@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8yl-bu-WHZ">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="0ct-ZU-bKO">
+            <objects>
+                <viewController id="8yl-bu-WHZ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RRp-6G-oSU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_splash_logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="2RA-xP-asQ">
+                                <rect key="frame" x="126" y="416" width="162" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="6Uc-7P-zRV"/>
+                                    <constraint firstAttribute="width" constant="162" id="MVh-iM-7fj"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="OFG-U9-gCf"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="2RA-xP-asQ" firstAttribute="centerY" secondItem="RRp-6G-oSU" secondAttribute="centerY" id="nW1-FX-I95"/>
+                            <constraint firstItem="2RA-xP-asQ" firstAttribute="centerX" secondItem="RRp-6G-oSU" secondAttribute="centerX" id="twi-It-icb"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qvU-LH-Juf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-184" y="-82"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ic_splash_logo_white" width="161" height="64"/>
+    </resources>
+</document>

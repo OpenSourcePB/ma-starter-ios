@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  presentation
+
+  Created by Karim Karimov on 28.02.21.
+  
+*/
+
+"ok" = "Ok";
+"done" = "Done";
+"error" = "Error";
+
+"active" = "Active";
+"blocked" = "Blocked";
+"expired" = "Expired";
