@@ -624,7 +624,7 @@
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.1.0;
+				minimumVersion = 6.5.0;
 			};
 		};
 		65C759DC25EBB8F300936F7F /* XCRemoteSwiftPackageReference "Swinject" */ = {
@@ -632,7 +632,7 @@
 			repositoryURL = "https://github.com/Swinject/Swinject";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.7.1;
+				minimumVersion = 2.8.1;
 			};
 		};
 		65D0ECF925EDF78000F63F7A /* XCRemoteSwiftPackageReference "promises" */ = {
@@ -640,7 +640,7 @@
 			repositoryURL = "https://github.com/google/promises";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.12;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
