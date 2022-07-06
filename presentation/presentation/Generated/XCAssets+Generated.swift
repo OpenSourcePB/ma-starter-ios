@@ -19,13 +19,9 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
-  internal enum Colors {
-  }
-  internal enum Media {
-    internal static let icMaster = ImageAsset(name: "ic_master")
-    internal static let icUnionPay = ImageAsset(name: "ic_union_pay")
-    internal static let icVisa = ImageAsset(name: "ic_visa")
-  }
+  internal static let icMaster = ImageAsset(name: "ic_master")
+  internal static let icUnionPay = ImageAsset(name: "ic_union_pay")
+  internal static let icVisa = ImageAsset(name: "ic_visa")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

@@ -10,7 +10,6 @@ import presentation
 import domain
 import data
 import Swinject
-import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

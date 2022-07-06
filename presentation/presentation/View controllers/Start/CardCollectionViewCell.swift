@@ -122,11 +122,11 @@ class CardCollectionViewCell: UICollectionViewCell {
     private func getImage(cardType: ECardType) -> UIImage? {
         switch cardType {
         case .visa:
-            return Asset.Media.icVisa.image
+            return Asset.icVisa.image
         case .master:
-            return Asset.Media.icMaster.image
+            return Asset.icMaster.image
         case .union_pay:
-            return Asset.Media.icUnionPay.image
+            return Asset.icUnionPay.image
         case .unknown:
             return nil
         }
