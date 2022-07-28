@@ -7,6 +7,8 @@
 
 import Foundation
 import RealmSwift
+import Realm
+import RealmFFI
 import RxSwift
 import RxRelay
 import Promises
@@ -32,9 +34,7 @@ class TransactionLocalDataSource: TransactionLocalDataSourceProtocol {
             .filter(predicate)
             .sorted(byKeyPath: "datetime", ascending: false)
             .freeze()
-            .map { (item) -> TransactionLocalDTO in
-                item
-            }
+            .map { $0 }
     }
     
     func observeTransactions(cardId: String) -> Observable<[TransactionLocalDTO]> {
