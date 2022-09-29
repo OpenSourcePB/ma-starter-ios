@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6556162828E2EFD80097E6E6 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 6556162728E2EFD80097E6E6 /* RxBlocking */; };
+		6556162A28E2EFD80097E6E6 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 6556162928E2EFD80097E6E6 /* RxRelay */; };
+		6556162C28E2EFD80097E6E6 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6556162B28E2EFD80097E6E6 /* RxSwift */; };
 		6562CAAA2608927700E5F286 /* BaseObservableUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562CAA92608927700E5F286 /* BaseObservableUseCase.swift */; };
 		6584B3D0260CBEB500F2813E /* BasePromiseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6584B3CF260CBEB500F2813E /* BasePromiseUseCase.swift */; };
 		6584B3D4260CC36500F2813E /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6584B3D3260CC36500F2813E /* UIError.swift */; };
@@ -27,9 +30,6 @@
 		659E8F4927C6637100F36018 /* CardRepoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659E8F4827C6637100F36018 /* CardRepoProtocol.swift */; };
 		659E8F4B27C6638300F36018 /* TransactionRepoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659E8F4A27C6638300F36018 /* TransactionRepoProtocol.swift */; };
 		65C758D425EA66C400936F7F /* domain.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C758C625EA66C300936F7F /* domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		65C7596625EA7F8700936F7F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 65C7596525EA7F8700936F7F /* RxSwift */; };
-		65C7596825EA7F8700936F7F /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 65C7596725EA7F8700936F7F /* RxRelay */; };
-		65C7596A25EA7F8700936F7F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 65C7596925EA7F8700936F7F /* RxCocoa */; };
 		65C759DE25EBB8F300936F7F /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 65C759DD25EBB8F300936F7F /* Swinject */; };
 		65C759E225EBB98000936F7F /* DomainDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C759E125EBB98000936F7F /* DomainDI.swift */; };
 		65C75A0F25EBD8DC00936F7F /* BaseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C75A0E25EBD8DC00936F7F /* BaseUseCase.swift */; };
@@ -74,9 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65C7596A25EA7F8700936F7F /* RxCocoa in Frameworks */,
-				65C7596825EA7F8700936F7F /* RxRelay in Frameworks */,
-				65C7596625EA7F8700936F7F /* RxSwift in Frameworks */,
+				6556162C28E2EFD80097E6E6 /* RxSwift in Frameworks */,
+				6556162A28E2EFD80097E6E6 /* RxRelay in Frameworks */,
+				6556162828E2EFD80097E6E6 /* RxBlocking in Frameworks */,
 				65D0ECFB25EDF78000F63F7A /* Promises in Frameworks */,
 				65C759DE25EBB8F300936F7F /* Swinject in Frameworks */,
 			);
@@ -85,12 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6556161C28E2EF210097E6E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		65C758B925EA66C300936F7F = {
 			isa = PBXGroup;
 			children = (
 				65C758C525EA66C300936F7F /* domain */,
 				65C758D025EA66C400936F7F /* domainTests */,
 				65C758C425EA66C300936F7F /* Products */,
+				6556161C28E2EF210097E6E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -220,11 +228,11 @@
 			);
 			name = domain;
 			packageProductDependencies = (
-				65C7596525EA7F8700936F7F /* RxSwift */,
-				65C7596725EA7F8700936F7F /* RxRelay */,
-				65C7596925EA7F8700936F7F /* RxCocoa */,
 				65C759DD25EBB8F300936F7F /* Swinject */,
 				65D0ECFA25EDF78000F63F7A /* Promises */,
+				6556162728E2EFD80097E6E6 /* RxBlocking */,
+				6556162928E2EFD80097E6E6 /* RxRelay */,
+				6556162B28E2EFD80097E6E6 /* RxSwift */,
 			);
 			productName = domain;
 			productReference = 65C758C325EA66C300936F7F /* domain.framework */;
@@ -534,20 +542,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		65C7596525EA7F8700936F7F /* RxSwift */ = {
+		6556162728E2EFD80097E6E6 /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65C7596425EA7F8700936F7F /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
+			productName = RxBlocking;
 		};
-		65C7596725EA7F8700936F7F /* RxRelay */ = {
+		6556162928E2EFD80097E6E6 /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65C7596425EA7F8700936F7F /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
-		65C7596925EA7F8700936F7F /* RxCocoa */ = {
+		6556162B28E2EFD80097E6E6 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65C7596425EA7F8700936F7F /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
+			productName = RxSwift;
 		};
 		65C759DD25EBB8F300936F7F /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;

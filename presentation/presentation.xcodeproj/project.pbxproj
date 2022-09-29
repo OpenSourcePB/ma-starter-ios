@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6556162128E2EF690097E6E6 /* domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6556162028E2EF690097E6E6 /* domain.framework */; };
+		6556162228E2EF690097E6E6 /* domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6556162028E2EF690097E6E6 /* domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6562CA4C26075B8400E5F286 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562CA4B26075B8400E5F286 /* UIView+Extensions.swift */; };
 		6562CA5026075D7F00E5F286 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562CA4F26075D7F00E5F286 /* UIButton+Extensions.swift */; };
 		6562CA862607709600E5F286 /* structured-swift4-localizable.stencil in Resources */ = {isa = PBXBuildFile; fileRef = 6562CA852607709600E5F286 /* structured-swift4-localizable.stencil */; };
@@ -31,8 +33,6 @@
 		65E904D8260367E1001EA7A5 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E904D7260367E1001EA7A5 /* StartViewController.swift */; };
 		65E904DC260367F1001EA7A5 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E904DB260367F1001EA7A5 /* StartViewModel.swift */; };
 		A0AC3C7B287454CD00A01F5D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A0AC3C7A287454CD00A01F5D /* SnapKit */; };
-		A0B8989B28747AF100F4DA3B /* FBLPromises in Frameworks */ = {isa = PBXBuildFile; productRef = A0B8989A28747AF100F4DA3B /* FBLPromises */; };
-		A0B8989D28747AF100F4DA3B /* Promises in Frameworks */ = {isa = PBXBuildFile; productRef = A0B8989C28747AF100F4DA3B /* Promises */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6556162228E2EF690097E6E6 /* domain.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		652A33EC262E0EB800E2D402 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6556162028E2EF690097E6E6 /* domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6562CA4B26075B8400E5F286 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		6562CA4F26075D7F00E5F286 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		6562CA852607709600E5F286 /* structured-swift4-localizable.stencil */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "structured-swift4-localizable.stencil"; sourceTree = "<group>"; };
@@ -86,8 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0B8989B28747AF100F4DA3B /* FBLPromises in Frameworks */,
-				A0B8989D28747AF100F4DA3B /* Promises in Frameworks */,
+				6556162128E2EF690097E6E6 /* domain.framework in Frameworks */,
 				A0AC3C7B287454CD00A01F5D /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6556161F28E2EF690097E6E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6556162028E2EF690097E6E6 /* domain.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6562CA43260733B300E5F286 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +173,7 @@
 				65C758F525EA66E100936F7F /* presentation */,
 				65C7590025EA66E200936F7F /* presentationTests */,
 				65C758F425EA66E100936F7F /* Products */,
+				6556161F28E2EF690097E6E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -297,8 +307,6 @@
 			name = presentation;
 			packageProductDependencies = (
 				A0AC3C7A287454CD00A01F5D /* SnapKit */,
-				A0B8989A28747AF100F4DA3B /* FBLPromises */,
-				A0B8989C28747AF100F4DA3B /* Promises */,
 			);
 			productName = presentation;
 			productReference = 65C758F325EA66E100936F7F /* presentation.framework */;
@@ -642,16 +650,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A0AC3C79287454CD00A01F5D /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		A0B8989A28747AF100F4DA3B /* FBLPromises */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A0B8989928747AF100F4DA3B /* XCRemoteSwiftPackageReference "promises" */;
-			productName = FBLPromises;
-		};
-		A0B8989C28747AF100F4DA3B /* Promises */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A0B8989928747AF100F4DA3B /* XCRemoteSwiftPackageReference "promises" */;
-			productName = Promises;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
