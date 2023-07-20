@@ -8,7 +8,7 @@
 import Foundation
 import domain
 import Promises
-import RxSwift
+import Combine
 
 class CustomerRepo: CustomerRepoProtocol {
     
@@ -34,13 +34,10 @@ class CustomerRepo: CustomerRepoProtocol {
             }
     }
     
-    func observeCustomer() -> Observable<Customer> {
-        return self.localDataSource.observeCustomer()
-            .filter({ local in
-                local != nil
-            })
-            .map { local in
-                local!.toDomain()
-            }
+    func observeCustomer() -> AnyPublisher<Customer, Never> {
+        self.localDataSource.observeCustomer()
+            .compactMap { $0 }
+            .map { $0.toDomain() }
+            .eraseToAnyPublisher()
     }
 }

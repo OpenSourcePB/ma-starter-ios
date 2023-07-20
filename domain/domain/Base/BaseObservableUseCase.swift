@@ -6,12 +6,12 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 protocol BaseObservableUseCase {
     associatedtype InputType
     
     associatedtype OutputType
     
-    func observe(input: InputType) -> Observable<OutputType>
+    func observe(input: InputType) -> AnyPublisher<OutputType, Never>
 }

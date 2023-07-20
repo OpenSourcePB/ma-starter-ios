@@ -7,8 +7,7 @@
 
 import Foundation
 import RealmSwift
-import RxSwift
-import RxRelay
+import Combine
 import Promises
 
 class CardLocalDataSource: CardLocalDataSourceProtocol {
@@ -16,19 +15,17 @@ class CardLocalDataSource: CardLocalDataSourceProtocol {
     private let realm: Realm
     private let logger: Logger
     
-    private let cardsRelay: BehaviorRelay<[CardLocalDTO]>
+    private let cardsSubject: CurrentValueSubject<[CardLocalDTO], Never> = .init([])
     
     init(realm: Realm,
          logger: Logger) {
         self.realm = realm
         self.logger = logger
-        self.cardsRelay = BehaviorRelay<[CardLocalDTO]>.init(value: [])
         self.syncCards()
     }
     
     private func syncCards() {
-        let cards = self.getCards()
-        self.cardsRelay.accept(cards)
+        self.cardsSubject.send(self.getCards())
     }
     
     func getCards() -> [CardLocalDTO] {
@@ -39,8 +36,8 @@ class CardLocalDataSource: CardLocalDataSourceProtocol {
             }
     }
     
-    func observeCards() -> Observable<[CardLocalDTO]> {
-        return self.cardsRelay.asObservable()
+    func observeCards() -> AnyPublisher<[CardLocalDTO], Never> {
+        return self.cardsSubject.eraseToAnyPublisher()
     }
     
     func save(cards: [CardLocalDTO]) -> Promise<Data> {

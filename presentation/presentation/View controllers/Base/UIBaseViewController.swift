@@ -6,15 +6,14 @@
 //
 
 import UIKit
-import RxSwift
+import Combine
 import domain
 
 open class UIBaseViewController<State, Effect, VM: BaseViewModel<State, Effect>>: UIViewController {
 
     // MARK: - Variables
     
-    private var compositeDisposable = CompositeDisposable()
-    internal var disposeBag = DisposeBag()
+    private var cancellables: Set<AnyCancellable> = .init()
     
     var isPageInitialized = false
     
@@ -50,47 +49,38 @@ open class UIBaseViewController<State, Effect, VM: BaseViewModel<State, Effect>>
         super.viewWillAppear(animated)
         
         self.setText()
-        
-        self.compositeDisposable = CompositeDisposable()
-        
-        let baseEffectSubscription = self.viewModel.observeBaseEffect().subscribe { (received) in
-            guard let effect = received.element else { return }
-            
+
+        let baseEffectSubscription = self.viewModel.observeBaseEffect().sink { effect in
             self.observe(baseEffect: effect)
         }
         
-        let effectSubscription = self.viewModel.observeEffect().subscribe { (received) in
-            guard let effect = received.element else { return }
-            
+        let effectSubscription = self.viewModel.observeEffect().sink { effect in
             self.observe(effect: effect)
         }
-        
-        let stateSubscription = self.viewModel.observeState().subscribe { (received) in
-            guard let state = received.element else { return }
-            
+
+        let stateSubscription = self.viewModel.observeState().sink { state in
             self.observe(state: state)
         }
-        
-        let loadingSubscription = self.viewModel.observeLoading().subscribe { (received) in
-            guard let isLoading = received.element else { return }
-            
+
+        let loadingSubscription = self.viewModel.observeLoading().sink { isLoading in
             if isLoading {
                 self.startAnimating()
             } else {
                 self.stopAnimating()
             }
         }
-        
-        self.addSubscription(baseEffectSubscription)
-        self.addSubscription(effectSubscription)
-        self.addSubscription(stateSubscription)
-        self.addSubscription(loadingSubscription)
+
+        self.addCancellable(baseEffectSubscription)
+        self.addCancellable(effectSubscription)
+        self.addCancellable(stateSubscription)
+        self.addCancellable(loadingSubscription)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.compositeDisposable.dispose()
+        self.cancellables.forEach { $0.cancel() }
+        self.cancellables.removeAll()
     }
     
     // MARK: - Initializations
@@ -101,9 +91,7 @@ open class UIBaseViewController<State, Effect, VM: BaseViewModel<State, Effect>>
         
     // MARK: - Initializations
     
-    func initVars() {
-        self.compositeDisposable.disposed(by: self.disposeBag)
-    }
+    func initVars() { }
     
     func initViews() {
         
@@ -130,8 +118,8 @@ open class UIBaseViewController<State, Effect, VM: BaseViewModel<State, Effect>>
     
     // MARK: - UI
     
-    func addSubscription(_ subscription: Disposable) {
-        let _ = self.compositeDisposable.insert(subscription)
+    func addCancellable(_ cancellable: AnyCancellable) {
+        cancellable.store(in: &self.cancellables)
     }
         
     func startAnimating() {

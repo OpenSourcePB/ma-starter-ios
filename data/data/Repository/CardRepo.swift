@@ -8,7 +8,7 @@
 import Foundation
 import domain
 import Promises
-import RxSwift
+import Combine
 
 class CardRepo: CardRepoProtocol {
     
@@ -37,12 +37,11 @@ class CardRepo: CardRepoProtocol {
             }
     }
     
-    func observeCards() -> Observable<[Card]> {
+    func observeCards() -> AnyPublisher<[Card], Never> {
         return self.localDataSource.observeCards()
             .map { localData in
-                return localData.map { local in
-                    local.toDomain()
-                }
+                return localData.map { $0.toDomain() }
             }
+            .eraseToAnyPublisher()
     }
 }

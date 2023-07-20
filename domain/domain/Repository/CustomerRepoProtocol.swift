@@ -7,9 +7,9 @@
 
 import Foundation
 import Promises
-import RxSwift
+import Combine
 
 public protocol CustomerRepoProtocol {
     func syncCustomer() -> Promise<Data>
-    func observeCustomer() -> Observable<Customer>
+    func observeCustomer() -> AnyPublisher<Customer, Never>
 }

@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 import Promises
 
 protocol CardLocalDataSourceProtocol {
-    func observeCards() -> Observable<[CardLocalDTO]>
+    func observeCards() -> AnyPublisher<[CardLocalDTO], Never>
     func save(cards: [CardLocalDTO]) -> Promise<Data>
 }

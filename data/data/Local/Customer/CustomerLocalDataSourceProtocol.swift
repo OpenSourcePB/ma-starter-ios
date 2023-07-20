@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 protocol CustomerLocalDataSourceProtocol {
     func getCustomerID() -> String
-    func observeCustomer() -> Observable<CustomerLocalDTO?>
+    func observeCustomer() -> AnyPublisher<CustomerLocalDTO?, Never>
     func save(customer: CustomerLocalDTO)
 }

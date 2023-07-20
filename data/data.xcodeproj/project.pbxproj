@@ -444,7 +444,6 @@
 			mainGroup = 65C7588925EA65C300936F7F;
 			packageReferences = (
 				65C7595A25EA7C3100936F7F /* XCRemoteSwiftPackageReference "Alamofire" */,
-				A0AC3C6D28744BA900A01F5D /* XCRemoteSwiftPackageReference "RxSwift" */,
 				A0AC3C7C287456B500A01F5D /* XCRemoteSwiftPackageReference "realm-swift" */,
 				A0B8989428747A3800F4DA3B /* XCRemoteSwiftPackageReference "promises" */,
 			);
@@ -738,14 +737,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.6.1;
-			};
-		};
-		A0AC3C6D28744BA900A01F5D /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.5.0;
 			};
 		};
 		A0AC3C7C287456B500A01F5D /* XCRemoteSwiftPackageReference "realm-swift" */ = {

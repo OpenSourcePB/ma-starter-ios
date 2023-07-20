@@ -7,9 +7,9 @@
 
 import Foundation
 import Promises
-import RxSwift
+import Combine
 
 public protocol TransactionRepoProtocol {
     func syncTransactions(of card: Card) -> Promise<Data>
-    func observeTransactions(of card: Card) -> Observable<[Transaction]>
+    func observeTransactions(of card: Card) -> AnyPublisher<[Transaction], Never>
 }

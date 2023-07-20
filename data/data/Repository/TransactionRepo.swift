@@ -8,7 +8,7 @@
 import Foundation
 import domain
 import Promises
-import RxSwift
+import Combine
 
 class TransactionRepo: TransactionRepoProtocol {
     
@@ -36,12 +36,11 @@ class TransactionRepo: TransactionRepoProtocol {
             }
     }
     
-    func observeTransactions(of card: Card) -> Observable<[Transaction]> {
-        return self.localDataSource.observeTransactions(cardId: card.id)
-            .map { data in
-                return data.map { local in
-                    local.toDomain()
-                }
+    func observeTransactions(of card: Card) -> AnyPublisher<[Transaction], Never> {
+        self.localDataSource.observeTransactions(cardId: card.id)
+            .map { localDTOs in
+                localDTOs.map { $0.toDomain() }
             }
+            .eraseToAnyPublisher()
     }
 }

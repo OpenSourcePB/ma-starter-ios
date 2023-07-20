@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 import Promises
 
 protocol TransactionLocalDataSourceProtocol {
-    func observeTransactions(cardId: String) -> Observable<[TransactionLocalDTO]>
+    func observeTransactions(cardId: String) -> AnyPublisher<[TransactionLocalDTO], Never>
     func save(cardId: String, transactions: [TransactionLocalDTO]) -> Promise<Data>
 }
 
