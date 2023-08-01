@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 public class ObserveCustomerUseCase: BaseObservableUseCase {
     typealias InputType = Data
@@ -18,7 +18,7 @@ public class ObserveCustomerUseCase: BaseObservableUseCase {
         self.repo = repo
     }
     
-    public func observe(input: Data) -> Observable<Customer> {
+    public func observe(input: Data) -> AnyPublisher<Customer, Never> {
         return self.repo.observeCustomer()
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 public class ObserveTransactionsUseCase: BaseObservableUseCase {
     typealias InputType = Card
@@ -18,7 +18,7 @@ public class ObserveTransactionsUseCase: BaseObservableUseCase {
         self.repo = repo
     }
     
-    public func observe(input: Card) -> Observable<[Transaction]> {
+    public func observe(input: Card) -> AnyPublisher<[Transaction], Never> {
         return self.repo.observeTransactions(of: input)
     }
 }

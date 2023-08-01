@@ -119,40 +119,32 @@ public class StartViewController: UIBaseViewController<Void, Void, StartViewMode
         super.viewWillAppear(animated)
         
         let customerSubscription = self.viewModel.observeCustomer()
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.setData(customer: data)
+            .sink { customer in
+                self.setData(customer: customer)
             }
         
-        self.addSubscription(customerSubscription)
+        self.addCancellable(customerSubscription)
         
         let cardsSubscription = self.viewModel.observeCards()
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.setData(cards: data)
+            .sink { cards in
+                self.setData(cards: cards)
             }
         
-        self.addSubscription(cardsSubscription)
+        self.addCancellable(cardsSubscription)
         
         let activeCardSubscription = self.viewModel.observeActiveCard()
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.setData(activeCard: data)
+            .sink { card in
+                self.setData(activeCard: card)
             }
         
-        self.addSubscription(activeCardSubscription)
+        self.addCancellable(activeCardSubscription)
         
         let transactionsSubscription = self.viewModel.observeTransactions()
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.setData(transactions: data)
+            .sink { transactions in
+                self.setData(transactions: transactions)
             }
         
-        self.addSubscription(transactionsSubscription)
+        self.addCancellable(transactionsSubscription)
     }
     
     // MARK: - UI

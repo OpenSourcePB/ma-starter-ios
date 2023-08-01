@@ -7,77 +7,66 @@
 
 import Foundation
 import RxRelay
-import RxSwift
+import Combine
 
 open class BaseViewModel<State, Effect> {
     
-    private let isLoadingState: BehaviorRelay<Bool> = BehaviorRelay<Bool>.init(value: false)
+    private let isLoadingState: CurrentValueSubject<Bool, Never> = .init(false)
     
-    private let stateRelay: BehaviorRelay<State?> = BehaviorRelay<State?>.init(value: nil)
-    private let effectRelay: PublishRelay<Effect> = PublishRelay<Effect>.init()
+    private let stateSubject: CurrentValueSubject<State?, Never> = .init(nil)
+    private let effectSubject: PassthroughSubject<Effect, Never> = .init()
     
-    private let baseEffectRelay: PublishRelay<BaseEffect> = PublishRelay<BaseEffect>.init()
+    private let baseEffectSubject: PassthroughSubject<BaseEffect, Never> = .init()
     
-    private let disposeBag = DisposeBag()
-    private let compositeDisposable = CompositeDisposable()
-    
-    init() {
-        self.compositeDisposable.disposed(by: self.disposeBag)
-    }
+    private var cancellables: Set<AnyCancellable> = .init()
     
     internal func setLoading(state: Bool) {
-        self.isLoadingState.accept(state)
+        self.isLoadingState.send(state)
     }
     
     internal func showLoading() {
-        self.isLoadingState.accept(true)
+        self.isLoadingState.send(true)
     }
     
     internal func hideLoading() {
-        self.isLoadingState.accept(false)
+        self.isLoadingState.send(false)
     }
     
-    open func observeLoading() -> Observable<Bool> {
-        return self.isLoadingState.asObservable()
+    open func observeLoading() -> AnyPublisher<Bool, Never> {
+        return self.isLoadingState.eraseToAnyPublisher()
     }
     
     internal func postEffect(effect: Effect) {
-        self.effectRelay.accept(effect)
+        self.effectSubject.send(effect)
     }
     
     internal func postBaseEffect(baseEffect: BaseEffect) {
-        self.baseEffectRelay.accept(baseEffect)
+        self.baseEffectSubject.send(baseEffect)
     }
     
     internal func postState(state: State) {
-        self.stateRelay.accept(state)
+        self.stateSubject.send(state)
     }
     
-    func observeEffect() -> Observable<Effect> {
-        return self.effectRelay.asObservable()
+    func observeEffect() -> AnyPublisher<Effect, Never> {
+        return self.effectSubject.eraseToAnyPublisher()
     }
     
-    func observeBaseEffect() -> Observable<BaseEffect> {
-        return self.baseEffectRelay.asObservable()
+    func observeBaseEffect() -> AnyPublisher<BaseEffect, Never> {
+        return self.baseEffectSubject.eraseToAnyPublisher()
     }
     
-    func observeState() -> Observable<State> {
-        self.stateRelay
-            .filter({ (optional) -> Bool in
-                optional != nil
-            })
-            .map({ (optional) -> State in
-                optional!
-            })
-            .asObservable()
+    func observeState() -> AnyPublisher<State, Never> {
+        self.stateSubject.compactMap { $0 }
+            .eraseToAnyPublisher()
     }
     
     func getState() -> State? {
-        return self.stateRelay.value
+        return self.stateSubject.value
     }
     
-    func add(subscription: Disposable) {
-        let _ = self.compositeDisposable.insert(subscription)
+    func add(cancellable: AnyCancellable) {
+        cancellable.store(in: &self.cancellables)
     }
     
     func show(error: Error) {
@@ -86,6 +75,11 @@ open class BaseViewModel<State, Effect> {
     
     func getConstant(key: String) -> String? {
         return Bundle(for: type(of: self)).infoDictionary![key] as? String
+    }
+
+    deinit {
+        self.cancellables.forEach { $0.cancel() }
+        self.cancellables.removeAll()
     }
 }
 

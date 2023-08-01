@@ -8,8 +8,7 @@
 import Foundation
 import domain
 import Promises
-import RxSwift
-import RxRelay
+import Combine
 
 public class StartViewModel: BaseViewModel<Void, Void> {
     
@@ -20,13 +19,13 @@ public class StartViewModel: BaseViewModel<Void, Void> {
     private let observeCardsUseCase: ObserveCardsUseCase
     private let syncTransactionsUseCase: SyncTransactionsUseCase
     private let observeTransactionsUseCase: ObserveTransactionsUseCase
+
+    private let customerDataSubject: CurrentValueSubject<Customer?, Never> = .init(nil)
+    private let cardsDataSubject: CurrentValueSubject<[Card], Never> = .init([])
+    private let activeCardSubject: CurrentValueSubject<Card?, Never> = .init(nil)
+    private let transactionsSubject: CurrentValueSubject<[Transaction], Never> = .init([])
     
-    private let customerDataRelay: BehaviorRelay<Customer?> = BehaviorRelay.init(value: nil)
-    private let cardsDataRelay: BehaviorRelay<[Card]> = BehaviorRelay.init(value: [])
-    private let activeCardRelay: BehaviorRelay<Card?> = BehaviorRelay.init(value: nil)
-    private let transactionsRelay: BehaviorRelay<[Transaction]> = BehaviorRelay.init(value: [])
-    
-    private var cardTransactionSubscription: Disposable? = nil
+    private var cardTransactionSubscription: AnyCancellable? = nil
     
     init(localizationHelper: LocalizationHelper,
          syncCustomerUseCase: SyncCustomerUseCase,
@@ -79,55 +78,44 @@ public class StartViewModel: BaseViewModel<Void, Void> {
     }
     
     private func subscribeCustomer() {
-        let subscription = self.observeCustomerUseCase.observe(input: Data())
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.customerDataRelay.accept(data)
+        let cancellable = self.observeCustomerUseCase.observe(input: Data())
+            .sink { customer in
+                self.customerDataSubject.send(customer)
             }
-        
-        self.add(subscription: subscription)
+        self.add(cancellable: cancellable)
     }
     
     private func subscribeCards() {
-        let subscription = self.observeCardsUseCase.observe(input: Data())
-            .subscribe { received in
-                guard let data = received.element else { return }
-                
-                self.cardsDataRelay.accept(data)
-                
-                if self.activeCardRelay.value == nil, let card = data.first {
+        let cancellable = self.observeCardsUseCase.observe(input: Data())
+            .sink { cards in
+                self.cardsDataSubject.send(cards)
+
+                if self.activeCardSubject.value == nil, let card = cards.first {
                     self.select(card: card)
                 }
             }
-        
-        self.add(subscription: subscription)
+        self.add(cancellable: cancellable)
     }
     
-    func observeCustomer() -> Observable<Customer> {
-        return self.customerDataRelay.asObservable()
-            .filter { data in
-                data != nil
-            }
-            .map { data in
-                data!
-            }
+    func observeCustomer() -> AnyPublisher<Customer, Never> {
+        self.customerDataSubject.compactMap { $0 }
+            .eraseToAnyPublisher()
     }
     
-    func observeCards() -> Observable<[Card]> {
-        return self.cardsDataRelay.asObservable()
+    func observeCards() -> AnyPublisher<[Card], Never> {
+        self.cardsDataSubject.eraseToAnyPublisher()
     }
     
-    func observeActiveCard() -> Observable<Card?> {
-        return self.activeCardRelay.asObservable()
+    func observeActiveCard() -> AnyPublisher<Card?, Never> {
+        self.activeCardSubject.eraseToAnyPublisher()
     }
     
-    func observeTransactions() -> Observable<[Transaction]> {
-        return self.transactionsRelay.asObservable()
+    func observeTransactions() -> AnyPublisher<[Transaction], Never> {
+        return self.transactionsSubject.eraseToAnyPublisher()
     }
     
     func select(card: Card) {
-        self.activeCardRelay.accept(card)
+        self.activeCardSubject.send(card)
         
         self.syncTransactionsUseCase.execute(input: card)
             .then({ _ in
@@ -136,28 +124,26 @@ public class StartViewModel: BaseViewModel<Void, Void> {
             .catch { error in
                 self.show(error: error)
             }
-        
-        self.cardTransactionSubscription?.dispose()
-        
+
+        self.cardTransactionSubscription?.cancel()
+
         self.cardTransactionSubscription = self.observeTransactionsUseCase.observe(input: card)
-            .subscribe({ received in
-                guard let data = received.element else { return }
-                
-                self.transactionsRelay.accept(data)
-            })
+            .sink { transactions in
+                self.transactionsSubject.send(transactions)
+            }
         
-        self.add(subscription: self.cardTransactionSubscription!)
+        self.add(cancellable: self.cardTransactionSubscription!)
     }
     
     func getCards() -> [Card] {
-        return self.cardsDataRelay.value
+        self.cardsDataSubject.value
     }
     
     func getTransactions() -> [Transaction] {
-        return self.transactionsRelay.value
+        self.transactionsSubject.value
     }
     
     func isCardSelected(card: Card) -> Bool {
-        return self.activeCardRelay.value?.id == card.id
+        self.activeCardSubject.value?.id == card.id
     }
 }

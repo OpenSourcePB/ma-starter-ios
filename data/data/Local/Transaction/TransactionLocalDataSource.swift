@@ -9,22 +9,20 @@ import Foundation
 import RealmSwift
 import Realm
 import RealmFFI
-import RxSwift
-import RxRelay
+import Combine
 import Promises
 
 class TransactionLocalDataSource: TransactionLocalDataSourceProtocol {
     
     private let realm: Realm
     private let logger: Logger
-    
-    private var transactionRelayMap: Dictionary<String, BehaviorRelay<[TransactionLocalDTO]>>
+
+    private var transactionSubjectMap: Dictionary<String, CurrentValueSubject<[TransactionLocalDTO], Never>> = [:]
 
     init(realm: Realm,
          logger: Logger) {
         self.realm = realm
         self.logger = logger
-        self.transactionRelayMap = [:]
     }
     
     private func getTransactionHistory(cardId: String) -> [TransactionLocalDTO] {
@@ -37,13 +35,15 @@ class TransactionLocalDataSource: TransactionLocalDataSourceProtocol {
             .map { $0 }
     }
     
-    func observeTransactions(cardId: String) -> Observable<[TransactionLocalDTO]> {
-        if let observable = self.transactionRelayMap[cardId]?.asObservable() {
+    func observeTransactions(cardId: String) -> AnyPublisher<[TransactionLocalDTO], Never> {
+        if let observable = self.transactionSubjectMap[cardId]?.eraseToAnyPublisher() {
             return observable
         } else {
-            let relay = BehaviorRelay(value: self.getTransactionHistory(cardId: cardId))
-            self.transactionRelayMap[cardId] = relay
-            return relay.asObservable()
+            let subject: CurrentValueSubject<[TransactionLocalDTO], Never> = .init(
+                self.getTransactionHistory(cardId: cardId)
+            )
+            self.transactionSubjectMap[cardId] = subject
+            return subject.eraseToAnyPublisher()
         }
     }
     
@@ -81,9 +81,8 @@ class TransactionLocalDataSource: TransactionLocalDataSourceProtocol {
     }
     
     private func syncTransactionHistory(cardId: String) {
-        if let relay = self.transactionRelayMap[cardId] {
-            let data = self.getTransactionHistory(cardId: cardId)
-            relay.accept(data)
+        if let subject = self.transactionSubjectMap[cardId] {
+            subject.send(self.getTransactionHistory(cardId: cardId))
         }
     }
 }
