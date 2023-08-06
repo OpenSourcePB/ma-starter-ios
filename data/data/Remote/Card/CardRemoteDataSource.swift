@@ -6,22 +6,23 @@
 //
 
 import Foundation
-import Promises
 import Alamofire
 
 class CardRemoteDataSource: CardRemoteDataSourceProtocol {
     
-    private let networkClient: NetworkClientProvider
+    private let networkClient: AsyncNetworkClientProtocol
     
-    init(networkClient: NetworkClientProvider) {
+    init(networkClient: AsyncNetworkClientProtocol) {
         self.networkClient = networkClient
     }
     
-    func getCards(by customerId: String) -> Promise<[CardRemoteDTO]> {
-        self.networkClient.request(
+    func getCards(by customerId: String) async throws -> [CardRemoteDTO] {
+        try await self.networkClient.request(
             url: CardAPI.getCards(of: customerId),
             method: .get,
-            params: EmptyParams()
+            headers: .default,
+            params: EmptyParams(),
+            encoder: URLEncodedFormParameterEncoder.default
         )
     }
 }

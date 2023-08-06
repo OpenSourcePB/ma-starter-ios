@@ -8,15 +8,16 @@
 import Foundation
 import Combine
 
-class CustomerLocalDataSource:
-    LocalDataStorage,
-    CustomerLocalDataSourceProtocol {
+class CustomerLocalDataSource: CustomerLocalDataSourceProtocol {
+
+    private let localData: LocalDataStorage
+    private let customerSubject: CurrentValueSubject<CustomerLocalDTO?, Never>
     
-    private let customerSubject: CurrentValueSubject<CustomerLocalDTO?, Never> = .init(nil)
-    
-    override init(logger: Logger) {
-        super.init(logger: logger)
-        self.customerSubject.send(self.getCached(key: LocalDataKeys.customer.rawValue))
+    init(localData: LocalDataStorage) {
+        self.localData = localData
+        self.customerSubject = .init(
+            localData.getCached(key: LocalDataKeys.customer.rawValue)
+        )
     }
     
     func getCustomerID() -> String {
@@ -28,7 +29,7 @@ class CustomerLocalDataSource:
     }
     
     func save(customer: CustomerLocalDTO) {
-        self.cache(key: LocalDataKeys.customer.rawValue, data: customer)
+        self.localData.cache(key: LocalDataKeys.customer.rawValue, data: customer)
         self.customerSubject.send(customer)
     }
 }

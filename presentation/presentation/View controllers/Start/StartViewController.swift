@@ -7,7 +7,6 @@
 
 import UIKit
 import domain
-import RxSwift
 
 public class StartViewController: UIBaseViewController<Void, Void, StartViewModel> {
     

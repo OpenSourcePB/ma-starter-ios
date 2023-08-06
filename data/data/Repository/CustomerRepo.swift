@@ -7,7 +7,6 @@
 
 import Foundation
 import domain
-import Promises
 import Combine
 
 class CustomerRepo: CustomerRepoProtocol {
@@ -23,19 +22,17 @@ class CustomerRepo: CustomerRepoProtocol {
         self.remoteDataSource = remoteDataSource
     }
     
-    func syncCustomer() -> Promise<Data> {
-        self.remoteDataSource.getCustomer(by: self.localDataSource.getCustomerID())
-            .then { data -> Promise<Data> in
-                self.localDataSource.save(customer: data.toLocal())
-                
-                return Promise<Data>() {
-                    return Data()
-                }
-            }
+    func syncCustomer() async throws {
+        let customer = try await self.remoteDataSource.getCustomer(
+            by: self.localDataSource.getCustomerID()
+        ).toLocal()
+
+        self.localDataSource.save(customer: customer)
     }
     
     func observeCustomer() -> AnyPublisher<Customer, Never> {
         self.localDataSource.observeCustomer()
+            .receive(on: DispatchQueue.main)
             .compactMap { $0 }
             .map { $0.toDomain() }
             .eraseToAnyPublisher()

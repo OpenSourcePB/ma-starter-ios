@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import Promises
 import Combine
 
 public protocol CustomerRepoProtocol {
-    func syncCustomer() -> Promise<Data>
+    func syncCustomer() async throws
     func observeCustomer() -> AnyPublisher<Customer, Never>
 }

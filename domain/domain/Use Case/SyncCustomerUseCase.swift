@@ -6,19 +6,15 @@
 //
 
 import Foundation
-import Promises
 
-public class SyncCustomerUseCase: BasePromiseUseCase {
-    typealias InputType = Data
-    typealias OutputType = Data
-    
+public class SyncCustomerUseCase: BaseAsyncThrowsUseCase {
     private let repo: CustomerRepoProtocol
     
     init(repo: CustomerRepoProtocol) {
         self.repo = repo
     }
     
-    public func execute(input: Data) -> Promise<Data> {
-        return self.repo.syncCustomer()
+    public func execute(input: Void) async throws -> Void {
+        try await self.repo.syncCustomer()
     }
 }
