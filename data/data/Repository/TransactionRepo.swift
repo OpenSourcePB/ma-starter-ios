@@ -7,7 +7,6 @@
 
 import Foundation
 import domain
-import Promises
 import Combine
 
 class TransactionRepo: TransactionRepoProtocol {
@@ -26,18 +25,18 @@ class TransactionRepo: TransactionRepoProtocol {
         self.customerLocalDataSource = customerLocalDataSource
     }
     
-    func syncTransactions(of card: Card) -> Promise<Data> {
-        self.remoteDataSource.getTransactions(of: self.customerLocalDataSource.getCustomerID(), of: card.id)
-            .then { data in
-                let localData = data.map { remote in
-                    remote.toLocal(cardId: card.id)
-                }
-                return self.localDataSource.save(cardId: card.id, transactions: localData)
-            }
+    func syncTransactions(of card: Card) async throws {
+        let transactions = try await self.remoteDataSource.getTransactions(
+            of: self.customerLocalDataSource.getCustomerID(),
+            of: card.id
+        ).map { $0.toLocal(cardId: card.id) }
+
+        try await self.localDataSource.save(cardId: card.id, transactions: transactions)
     }
     
     func observeTransactions(of card: Card) -> AnyPublisher<[Transaction], Never> {
         self.localDataSource.observeTransactions(cardId: card.id)
+            .receive(on: DispatchQueue.main)
             .map { localDTOs in
                 localDTOs.map { $0.toDomain() }
             }

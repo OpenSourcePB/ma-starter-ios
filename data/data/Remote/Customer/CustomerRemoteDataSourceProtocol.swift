@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import Promises
 
 protocol CustomerRemoteDataSourceProtocol {
-    func getCustomer(by id: String) -> Promise<CustomerRemoteDTO>
+    func getCustomer(by id: String) async throws -> CustomerRemoteDTO
 }

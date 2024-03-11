@@ -9,16 +9,13 @@ import Foundation
 import Combine
 
 public class ObserveCardsUseCase: BaseObservableUseCase {
-    typealias InputType = Data
-    typealias OutputType = [Card]
-    
     private let repo: CardRepoProtocol
     
     init(repo: CardRepoProtocol) {
         self.repo = repo
     }
     
-    public func observe(input: Data) -> AnyPublisher<[Card], Never> {
+    public func observe(input: Void) -> AnyPublisher<[Card], Never> {
         return self.repo.observeCards()
     }
 }

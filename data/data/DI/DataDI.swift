@@ -29,18 +29,16 @@ public class DataAssembly: Assembly {
         
         // MARK: - Helpers
         
-        container.register(NetworkClientProvider.self) { r in
-            let interceptors: [RequestAdapter] = [
-                r.resolve(BaseInterceptor.self)!,
-            ]
-            
-            let retriers: [RequestRetrier] = []
-            
-            return NetworkClientProvider(baseUrl: self.baseUrl,
-                                         requestInterceptors: interceptors,
-                                         requestRetriers: retriers,
-                                         logger: r.resolve(Logger.self)!,
-                                         networkLogger: r.resolve(NetworkLogger.self)!)
+        container.register(AsyncNetworkClientProtocol.self) { r in
+            AsyncNetworkClient(
+                baseUrl: self.baseUrl,
+                requestAdapter: [
+                    r.resolve(BaseInterceptor.self)!,
+                ],
+                requestRetriers: [],
+                logger: r.resolve(Logger.self)!,
+                networkLogger: r.resolve(NetworkLogger.self)!
+            )
         }
         
         container.register(Logger.self) { r in
@@ -56,43 +54,41 @@ public class DataAssembly: Assembly {
         }
         
         // MARK: - Data sources
-        
-        container.register(Realm.self) { _ in
-            Realm.Configuration.defaultConfiguration = Realm.Configuration(
-                schemaVersion: 1,
-                migrationBlock: { migration, oldSchemaVersion in
-                    // migration
-                },
-                deleteRealmIfMigrationNeeded: true
-            )
-            return try! Realm()
+
+        container.register(RealmClientProtocol.self) { r in
+            runBlocking { await RealmClient() }
+        }.inObjectScope(.container)
+
+        container.register(LocalDataStorage.self) { r in
+            LocalDataStorage(logger: r.resolve(Logger.self)!)
         }.inObjectScope(.container)
         
         container.register(CustomerLocalDataSourceProtocol.self) { r in
-            CustomerLocalDataSource(logger: r.resolve(Logger.self)!)
+            CustomerLocalDataSource(localData: r.resolve(LocalDataStorage.self)!)
         }.inObjectScope(.container)
         
         container.register(CardLocalDataSourceProtocol.self) { r in
             CardLocalDataSource(
-                realm: r.resolve(Realm.self)!,
-                logger: r.resolve(Logger.self)!)
+                realmClient: r.resolve(RealmClientProtocol.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(TransactionLocalDataSourceProtocol.self) { r in
             TransactionLocalDataSource(
-                realm: r.resolve(Realm.self)!, logger: r.resolve(Logger.self)!)
-        }
+                realmClient: r.resolve(RealmClientProtocol.self)!
+            )
+        }.inObjectScope(.container)
         
         container.register(CustomerRemoteDataSourceProtocol.self) { r in
-            CustomerRemoteDataSource(networkClient: r.resolve(NetworkClientProvider.self)!)
+            CustomerRemoteDataSource(networkClient: r.resolve(AsyncNetworkClientProtocol.self)!)
         }
         
         container.register(CardRemoteDataSourceProtocol.self) { r in
-            CardRemoteDataSource(networkClient: r.resolve(NetworkClientProvider.self)!)
+            CardRemoteDataSource(networkClient: r.resolve(AsyncNetworkClientProtocol.self)!)
         }
         
         container.register(TransactionRemoteDataSourceProtocol.self) { r in
-            TransactionRemoteDataSource(networkClient: r.resolve(NetworkClientProvider.self)!)
+            TransactionRemoteDataSource(networkClient: r.resolve(AsyncNetworkClientProtocol.self)!)
         }
         
         // MARK: - Repository

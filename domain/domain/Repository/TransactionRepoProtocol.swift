@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import Promises
 import Combine
 
 public protocol TransactionRepoProtocol {
-    func syncTransactions(of card: Card) -> Promise<Data>
+    func syncTransactions(of card: Card) async throws
     func observeTransactions(of card: Card) -> AnyPublisher<[Transaction], Never>
 }

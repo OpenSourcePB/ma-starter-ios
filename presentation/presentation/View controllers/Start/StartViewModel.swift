@@ -7,7 +7,6 @@
 
 import Foundation
 import domain
-import Promises
 import Combine
 
 public class StartViewModel: BaseViewModel<Void, Void> {
@@ -46,39 +45,40 @@ public class StartViewModel: BaseViewModel<Void, Void> {
         super.init()
         
         self.initLocalization()
-        self.syncCustomerData()
-        self.syncCards()
-        
+
         self.subscribeCustomer()
         self.subscribeCards()
+
+        Task {
+            await self.syncCustomerData()
+            await self.syncCards()
+        }
     }
     
     private func initLocalization() {
         self.localizationHelper.set(locale: "az-AZ")
     }
     
-    private func syncCustomerData() {
-        self.syncCustomerUseCase.execute(input: Data())
-            .then({ _ in
-                print("✅ Customer data is synced")
-            })
-            .catch { error in
-                self.show(error: error)
-            }
+    private func syncCustomerData() async {
+        do {
+            try await self.syncCustomerUseCase.execute(input: Void())
+            print("✅ Customer data is synced")
+        } catch {
+            self.show(error: error)
+        }
     }
     
-    private func syncCards() {
-        self.syncCardsUseCsase.execute(input: Data())
-            .then({ _ in
-                print("✅ Cards are synced")
-            })
-            .catch { error in
-                self.show(error: error)
-            }
+    private func syncCards() async {
+        do {
+            try await self.syncCardsUseCsase.execute(input: Void())
+            print("✅ Cards are synced")
+        } catch {
+            self.show(error: error)
+        }
     }
     
     private func subscribeCustomer() {
-        let cancellable = self.observeCustomerUseCase.observe(input: Data())
+        let cancellable = self.observeCustomerUseCase.observe(input: Void())
             .sink { customer in
                 self.customerDataSubject.send(customer)
             }
@@ -86,7 +86,7 @@ public class StartViewModel: BaseViewModel<Void, Void> {
     }
     
     private func subscribeCards() {
-        let cancellable = self.observeCardsUseCase.observe(input: Data())
+        let cancellable = self.observeCardsUseCase.observe(input: Void())
             .sink { cards in
                 self.cardsDataSubject.send(cards)
 
@@ -116,14 +116,15 @@ public class StartViewModel: BaseViewModel<Void, Void> {
     
     func select(card: Card) {
         self.activeCardSubject.send(card)
-        
-        self.syncTransactionsUseCase.execute(input: card)
-            .then({ _ in
+
+        Task {
+            do {
+                try await self.syncTransactionsUseCase.execute(input: card)
                 print("✅ Transactions of card (id: \(card.id)) are synced")
-            })
-            .catch { error in
+            } catch {
                 self.show(error: error)
             }
+        }
 
         self.cardTransactionSubscription?.cancel()
 

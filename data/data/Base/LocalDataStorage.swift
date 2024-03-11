@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Promises
 import domain
 
 open class LocalDataStorage {

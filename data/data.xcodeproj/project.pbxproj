@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		323D4E302A7C4AA1008E6226 /* RealmClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323D4E2F2A7C4AA1008E6226 /* RealmClient.swift */; };
+		323D4E372A7C4C40008E6226 /* AsyncNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323D4E362A7C4C40008E6226 /* AsyncNetworkClient.swift */; };
 		6556162528E2EF7E0097E6E6 /* domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6556162428E2EF7E0097E6E6 /* domain.framework */; };
 		6556162628E2EF7E0097E6E6 /* domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6556162428E2EF7E0097E6E6 /* domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		659049AA260D9B66005AA8DC /* EmptyParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659049A9260D9B66005AA8DC /* EmptyParams.swift */; };
@@ -45,7 +47,6 @@
 		65D0ECBB25ECC15D00F63F7A /* LocalDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECBA25ECC15D00F63F7A /* LocalDataStorage.swift */; };
 		65D0ECC025ECC47200F63F7A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECBF25ECC47200F63F7A /* Logger.swift */; };
 		65D0ECC425ECC4F100F63F7A /* ConsoleLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECC325ECC4F100F63F7A /* ConsoleLogHandler.swift */; };
-		65D0ECDC25ED0FC900F63F7A /* NetworkClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECDB25ED0FC900F63F7A /* NetworkClientProvider.swift */; };
 		65D0ECE725ED51E800F63F7A /* LocalDataKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECE625ED51E800F63F7A /* LocalDataKeys.swift */; };
 		65D0ECFF25EDF9B100F63F7A /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ECFE25EDF9B100F63F7A /* NetworkLogger.swift */; };
 		65D0ED0625EE009700F63F7A /* BaseInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D0ED0525EE009700F63F7A /* BaseInterceptor.swift */; };
@@ -68,6 +69,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		323D4E2F2A7C4AA1008E6226 /* RealmClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmClient.swift; sourceTree = "<group>"; };
+		323D4E362A7C4C40008E6226 /* AsyncNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncNetworkClient.swift; sourceTree = "<group>"; };
 		6556162428E2EF7E0097E6E6 /* domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		659049A9260D9B66005AA8DC /* EmptyParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyParams.swift; sourceTree = "<group>"; };
 		659049AF260DAE33005AA8DC /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -108,7 +111,6 @@
 		65D0ECBA25ECC15D00F63F7A /* LocalDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorage.swift; sourceTree = "<group>"; };
 		65D0ECBF25ECC47200F63F7A /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		65D0ECC325ECC4F100F63F7A /* ConsoleLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleLogHandler.swift; sourceTree = "<group>"; };
-		65D0ECDB25ED0FC900F63F7A /* NetworkClientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientProvider.swift; sourceTree = "<group>"; };
 		65D0ECE625ED51E800F63F7A /* LocalDataKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataKeys.swift; sourceTree = "<group>"; };
 		65D0ECFE25EDF9B100F63F7A /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		65D0ED0525EE009700F63F7A /* BaseInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInterceptor.swift; sourceTree = "<group>"; };
@@ -141,7 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				65D0ECDF25ED176000F63F7A /* Interceptor */,
-				65D0ECDB25ED0FC900F63F7A /* NetworkClientProvider.swift */,
+				323D4E362A7C4C40008E6226 /* AsyncNetworkClient.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -349,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				65D0ECBA25ECC15D00F63F7A /* LocalDataStorage.swift */,
+				323D4E2F2A7C4AA1008E6226 /* RealmClient.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -503,7 +506,6 @@
 				659E8F6927C6670400F36018 /* CardRemoteDTO.swift in Sources */,
 				659E8F8627C66EA600F36018 /* TransactionRemoteDataSource.swift in Sources */,
 				659E8F7627C66E3F00F36018 /* CustomerRemoteDataSourceProtocol.swift in Sources */,
-				65D0ECDC25ED0FC900F63F7A /* NetworkClientProvider.swift in Sources */,
 				659E8F6F27C66D8F00F36018 /* CustomerRemoteDTO.swift in Sources */,
 				65D0ED0625EE009700F63F7A /* BaseInterceptor.swift in Sources */,
 				659E8F7C27C66E6200F36018 /* CardRemoteDataSourceProtocol.swift in Sources */,
@@ -521,7 +523,9 @@
 				659E8F5427C665F800F36018 /* CardLocalDataSource.swift in Sources */,
 				659E8F5627C6660700F36018 /* CardLocalDataSourceProtocol.swift in Sources */,
 				659E8F4F27C664CE00F36018 /* CustomerRepo.swift in Sources */,
+				323D4E302A7C4AA1008E6226 /* RealmClient.swift in Sources */,
 				65D0ECC025ECC47200F63F7A /* Logger.swift in Sources */,
+				323D4E372A7C4C40008E6226 /* AsyncNetworkClient.swift in Sources */,
 				659E8F5B27C6662400F36018 /* CustomerLocalDataSourceProtocol.swift in Sources */,
 				659E8F7127C66D9A00F36018 /* CustomerLocalDTO.swift in Sources */,
 				65D0ECC425ECC4F100F63F7A /* ConsoleLogHandler.swift in Sources */,
@@ -744,7 +748,7 @@
 			repositoryURL = "https://github.com/realm/realm-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.28.2;
+				minimumVersion = 10.42.0;
 			};
 		};
 		A0B8989428747A3800F4DA3B /* XCRemoteSwiftPackageReference "promises" */ = {

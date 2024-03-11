@@ -6,19 +6,15 @@
 //
 
 import Foundation
-import Promises
 
-public class SyncCardsUseCase: BasePromiseUseCase {
-    typealias InputType = Data
-    typealias OutputType = Data
-    
+public class SyncCardsUseCase: BaseAsyncThrowsUseCase {
     private let repo: CardRepoProtocol
     
     init(repo: CardRepoProtocol) {
         self.repo = repo
     }
     
-    public func execute(input: Data) -> Promise<Data> {
-        return self.repo.syncCards()
+    public func execute(input: Void) async throws -> Void{
+        try await self.repo.syncCards()
     }
 }

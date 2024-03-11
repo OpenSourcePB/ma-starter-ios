@@ -7,7 +7,6 @@
 
 import Foundation
 import domain
-import Promises
 import Combine
 
 class CardRepo: CardRepoProtocol {
@@ -26,19 +25,17 @@ class CardRepo: CardRepoProtocol {
         self.customerLocalDataSource = customerLocalDataSource
     }
     
-    func syncCards() -> Promise<Data> {
-        self.remoteDataSource.getCards(by: customerLocalDataSource.getCustomerID())
-            .then { data -> Promise<Data> in
-                let localData = data.map { remote in
-                    remote.toLocal()
-                }
-                
-                return self.localDataSource.save(cards: localData)
-            }
+    func syncCards() async throws {
+        let card = try await self.remoteDataSource.getCards(
+            by: customerLocalDataSource.getCustomerID()
+        ).map { $0.toLocal() }
+
+        try await self.localDataSource.save(cards: card)
     }
     
     func observeCards() -> AnyPublisher<[Card], Never> {
         return self.localDataSource.observeCards()
+            .receive(on: DispatchQueue.main)
             .map { localData in
                 return localData.map { $0.toDomain() }
             }

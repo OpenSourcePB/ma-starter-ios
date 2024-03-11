@@ -7,10 +7,9 @@
 
 import Foundation
 import Combine
-import Promises
 
 protocol TransactionLocalDataSourceProtocol {
     func observeTransactions(cardId: String) -> AnyPublisher<[TransactionLocalDTO], Never>
-    func save(cardId: String, transactions: [TransactionLocalDTO]) -> Promise<Data>
+    func save(cardId: String, transactions: [TransactionLocalDTO]) async throws
 }
 

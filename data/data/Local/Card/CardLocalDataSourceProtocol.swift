@@ -7,9 +7,8 @@
 
 import Foundation
 import Combine
-import Promises
 
 protocol CardLocalDataSourceProtocol {
     func observeCards() -> AnyPublisher<[CardLocalDTO], Never>
-    func save(cards: [CardLocalDTO]) -> Promise<Data>
+    func save(cards: [CardLocalDTO]) async throws
 }
